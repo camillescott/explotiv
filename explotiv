@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+from __future__ import print_function
+
+import argparse
+import os
+import sys
+
+import server
+import phylo
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+
+    def add_common_args(p):
+        p.add_argument('--database-dir',
+                       default=os.environ.get('DAMMIT_DB_DIR'))
+        return p
+
+    view_parser = add_common_args(subparsers.add_parser('view'))
+    view_parser.add_argument('-p', '--port', type=int, default=5001)
+    view_parser.add_argument('--no-debug', action='store_true', default=False)
+    view_parser.add_argument('--host', default='0.0.0.0')
+    #parser.add_argument('--directory')
+    view_parser.set_defaults(func=server.run)
+
+    analyze_parser = add_common_args(subparsers.add_parser('analyze'))
+    analyze_parser.add_argument('--alignments')
+    analyze_parser.add_argument('-o', '--results')
+    analyze_parser.set_defaults(func=phylo.analyze)
+
+    args = parser.parse_args()
+    if args.database_dir is None:
+        print('You must set a database directory!', file=sys.stderr)
+        sys.exit(2)
+    args.func(args)
