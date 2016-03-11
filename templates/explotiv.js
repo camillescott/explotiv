@@ -5,8 +5,8 @@ var width = 960,
     max_count,
     colormap;
 
-d3.json("{{ url_for('static', filename='lamprey.taxid.probs.full.json') }}", function(error, result) {
-    probs = result;
+d3.json("{{ url_for('phylo_pane.probabilities') }}", function(error, result) {
+    probs = result.data;
     max_prob = d3.max(Object.keys(probs).map(
         function(key) {
             return probs[key];

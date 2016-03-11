@@ -22,7 +22,8 @@ if __name__ == '__main__':
     view_parser.add_argument('-p', '--port', type=int, default=5001)
     view_parser.add_argument('--no-debug', action='store_true', default=False)
     view_parser.add_argument('--host', default='0.0.0.0')
-    #parser.add_argument('--directory')
+    view_parser.add_argument('-i', '--input', required=True)
+    #view_parser.add_argument('--directory', required=True)
     view_parser.set_defaults(func=server.run)
 
     analyze_parser = add_common_args(subparsers.add_parser('analyze'))
@@ -34,4 +35,5 @@ if __name__ == '__main__':
     if args.database_dir is None:
         print('You must set a database directory!', file=sys.stderr)
         sys.exit(2)
+
     args.func(args)

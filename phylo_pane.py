@@ -11,8 +11,9 @@ from jinja2 import TemplateNotFound
 import pandas as pd
 
 from common import static_folder, template_folder
+from database import db
 
-views = Blueprint('pyhlo_pane', __name__,
+views = Blueprint('phylo_pane', __name__,
                   static_folder=static_folder,
                   template_folder=template_folder)
 
@@ -23,3 +24,17 @@ def error_404_page(error):
 @views.route('/')
 def phylo_viz():
     return render_template('explotiv.html')
+
+@views.route('/probabilities')
+def probabilities():
+    key = os.path.basename(current_app.config['PHYLO_PROB_FN'])
+    try:
+        phylo_probs = db['phylo'][key]
+    except KeyError:
+        print('probs not in db, loading')
+        with open(current_app.config['PHYLO_PROB_FN']) as fp:
+            phylo_probs = json.load(fp)
+        db['phylo'] = {}
+        db['phylo'][key] = phylo_probs
+
+    return jsonify({'data': phylo_probs})
