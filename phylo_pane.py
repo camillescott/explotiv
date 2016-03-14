@@ -12,6 +12,7 @@ import pandas as pd
 
 from common import static_folder, template_folder
 from database import db
+import database
 
 views = Blueprint('phylo_pane', __name__,
                   static_folder=static_folder,
@@ -23,18 +24,13 @@ def error_404_page(error):
 
 @views.route('/')
 def phylo_viz():
-    return render_template('explotiv.html')
+    return render_template('explotiv.html',
+                           phylo_mat_fn=current_app.config['PHYLO_PROB_MAT_FN'])
 
-@views.route('/probabilities')
-def probabilities():
-    key = os.path.basename(current_app.config['PHYLO_PROB_FN'])
-    try:
-        phylo_probs = db['phylo'][key]
-    except KeyError:
-        print('probs not in db, loading')
-        with open(current_app.config['PHYLO_PROB_FN']) as fp:
-            phylo_probs = json.load(fp)
-        db['phylo'] = {}
-        db['phylo'][key] = phylo_probs
 
-    return jsonify({'data': phylo_probs})
+@views.route('/probability-means')
+def probability_means():
+    key = os.path.basename(current_app.config['PHYLO_PROB_MAT_FN'])
+    df = database.get_p_df(key)
+
+    return jsonify({'data': df.T.mean().to_dict()})

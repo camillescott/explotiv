@@ -17,12 +17,11 @@ def run(args):
     app = Flask(__name__,
                 static_folder=static_folder,
                 template_folder=template_folder)
-    #app.config['ZODB_STORAGE'] = 'file://' + os.path.join(args.directory,
-    #                                                      'dammit.database.fs')
-    #app.config['DIRECTORY'] = os.path.abspath(args.directory)
+
     app.config['ZODB_STORAGE'] = 'file://' + os.path.join(args.database_dir,
                                                           'explotiv.fs')
-    app.config['PHYLO_PROB_FN'] = os.path.abspath(args.input)
+    #app.config['PHYLO_PROB_FN'] = os.path.abspath(args.input)
+    app.config['PHYLO_PROB_MAT_FN'] = os.path.abspath(args.input)
 
     #app.register_blueprint(transcript_pane.views)
     app.register_blueprint(phylo_pane.views)

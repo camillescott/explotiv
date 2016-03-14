@@ -61,24 +61,21 @@ def transfer_probs(subtree):
     if subtree.is_tip():
         subtree.Probs.append(subtree.current_p)
         #subtree.current_p = 0.0
-        return subtree.Probs[-1:]
+        return {subtree.name: subtree.Probs[-1]}
     else:
-        child_probs = []
+        child_probs = {}
         for child in subtree.children:
-            child_probs.extend(transfer_probs(child))
+            child_probs.update(transfer_probs(child))
         # if we had branch distances we would divide by sum(distances), but for now dist always equals 1
         if not child_probs:
             avg_prob = 0.0
         else:
-            avg_prob = np.mean(child_probs)
+            avg_prob = np.mean(child_probs.values())
 
         subtree.Probs.append(avg_prob)
-        child_probs.append(avg_prob)
+        child_probs[subtree.name] = avg_prob
 
-        if not subtree.is_root():
-            return child_probs
-        else:
-            pass
+        return child_probs
 
 
 def set_current_p(row, tree_index):
@@ -118,20 +115,21 @@ def calculate_clade_probs(tree, tree_index, hits_df):
     bar = pyprind.ProgBar(len(hits_df.q_name.unique()),
                           title='Calculating probability masses.',
                           width=80, monitor=True)
-
+    prob_map = {}
     # for each transcript, accumulate probability mass
     for transcript, group in hits_df.groupby('q_name'):
         # for now we just choose the best hit of their are multiple hits per subject
         group = group.sort_values(['s_name', 'P_not_fp'], ascending=False).drop_duplicates(subset='s_name')
         reset_tree_current_p(tree)
         group.apply(set_current_p, args=(tree_index,), axis=1)
-        transfer_probs(tree)
+        transcript_prob_map = transfer_probs(tree)
+        prob_map[transcript] = transcript_prob_map
         bar.update(item_id = '{0} (with {1} hits)'.format(transcript, len(group)))
 
     calculate_avg_probs(tree)
 
     probs = {node.name:node.P for node in tree.postorder()}
-    return probs
+    return probs, prob_map
 
 
 def analyze(args):
@@ -152,6 +150,10 @@ def analyze(args):
                            right_on='protein_id',
                            how='left')
 
-    probs = calculate_clade_probs(odb_tree, odb_tree_index, odb_hits_df)
-    with open(args.results, 'wb') as fp:
-        json.dump(probs, fp)
+    probs, prob_map = calculate_clade_probs(odb_tree, odb_tree_index, odb_hits_df)
+    df = pd.DataFrame(prob_map)
+    df.index.name = 'taxid'
+
+    #with open(args.results, 'wb') as fp:
+    #    json.dump(probs, fp)
+    df.to_csv(args.results + '.csv')
