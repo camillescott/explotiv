@@ -1,18 +1,12 @@
 <meta charset="utf-8">
+<head>
+    <title> explotiv </title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="all"/>
+</head>
+
 <style>
 
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin: auto;
-  position: relative;
-  width: 960px;
-}
-
-form {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
 
 .d3-tip {
   line-height: 1;
@@ -26,11 +20,29 @@ form {
 </style>
 {% include 'js_imports.html' %}
 <body>
-    <div id='chart'></div>
+    <header>
+    <h1><em>explotiv</em> Transcriptome Explorer</h1>
+    </header>
+    <nav>
+    <div id='explotiv-legend'></div>
+    </nav>
+
+    <section>
+    <div id='explotiv-chart'></div>
+    </section>
+    <aside>
+        <div class='hoverInfo' id='hoverinfodiv'></div>
+        <div id='histogram-chart'></div>
+    </aside>
 <script>
+    TESTER = document.getElementById('histogram-chart');
+        Plotly.plot( TESTER, [{
+                x: [1, 2, 3, 4, 5],
+                    y: [1, 2, 4, 8, 16] }], {
+                            margin: { t: 0 } } );
 
 {% include 'explotiv.js' %}
-phyloInit("{{ phylo_mat_fn }}");
+phyloInit();
 
 </script>
 </body>
