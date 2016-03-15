@@ -4,9 +4,6 @@ var width = 960,
     colormap = d3_scale.scaleViridis().domain([0.0,1.0]);
 
 
-
-
-
 function dictValues(dict) {
     return Object.keys(dict).map(
         function(key) {
@@ -30,7 +27,7 @@ function phyloViz(data) {
     var tip = d3.tip().attr('class', 'd3-tip')
         .offset(function() {
             return [this.getBBox().height / 2, -this.getBBox().width/2]
-        }).html(function(d) { return d.organism + ' (' + data[d.taxid] + ')'; });
+        }).html(function(d) { return d.organism + ' (<em>P</em>=' + +(data[d.taxid]).toFixed(3) + ')'; });
 
 
     var svg = d3.select("#chart").append("svg")
