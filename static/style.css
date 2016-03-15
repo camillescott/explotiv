@@ -1,0 +1,68 @@
+h1 { 
+    text-align: center;
+}
+
+a { 
+    color: #0066B3; 
+    background: inherit; 
+    text-decoration: none;
+}
+
+.hoverInfo {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+    padding: 5px;
+    margin: 5px;
+    height: 20px;
+    text-align: center;
+}
+
+header {
+    color: white;
+    text-align: center;
+    padding: 5px; 
+    margin: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border-radius: 2px;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  /*width: 960px;*/
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+nav {
+    line-height:30px;
+    height:800px;
+    width:100px;
+    float:left;
+    padding:5px; 
+    margin: 5px;
+    border-radius: 2px;
+}
+
+aside {
+    float: right;
+    width: 400px;
+    height: 800px;
+}
+
+section {
+    width:800px;
+    height:800px;
+    float:left;
+    padding:10px; 
+}
