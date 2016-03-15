@@ -18,19 +18,32 @@ views = Blueprint('phylo_pane', __name__,
                   static_folder=static_folder,
                   template_folder=template_folder)
 
+
 @views.errorhandler(404)
 def error_404_page(error):
     return render_template('404.html', msg=error.description), 404
 
+
 @views.route('/')
 def phylo_viz():
-    return render_template('explotiv.html',
-                           phylo_mat_fn=current_app.config['PHYLO_PROB_MAT_FN'])
+    return render_template('explotiv.html')
 
 
 @views.route('/probability-means')
-def probability_means():
-    key = os.path.basename(current_app.config['PHYLO_PROB_MAT_FN'])
-    df = database.get_p_df(key)
+def node_means():
+    key = current_app.config['DATABASE_KEY']
+    means = { taxid: data['mean'] for taxid, data in \
+              db[key]['explotiv-data'].iteritems() }
+    return jsonify({'data': means})
 
-    return jsonify({'data': df.T.mean().to_dict()})
+
+@views.route('/node-data/<int:taxid>')
+def node_data(taxid):
+    key = current_app.config['DATABASE_KEY']
+
+    try:
+        data = db[key]['explotiv-data'][taxid]
+    except KeyError as e:
+        abort(404, 'No database entry for taxid={0}'.format(taxid))
+    data['scores'] = data['scores'].to_dict()
+    return jsonify({'data': dict(data)})
