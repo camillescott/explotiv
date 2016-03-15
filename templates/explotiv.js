@@ -4,8 +4,9 @@ var width = 800,
     legend_height = 500,
     legend_items = 20,
     selected_node,
-    radius = Math.min(width, height) / 2,
-    colormap = d3_scale.scaleViridis().domain([0.0,1.0]);
+    radius = (Math.min(width, height) / 2)-20,
+    colormap = d3_scale.scaleViridis().domain([0.0,1.0]),
+    majorGroupColormap = d3.scale.category20();
 
 var major_groups = d3.set([6656, 40674, 32561, 7898, 4751]);
 
@@ -94,7 +95,7 @@ function phyloViz(data) {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
         .call(tip);
 
 
@@ -113,11 +114,12 @@ function phyloViz(data) {
     d3.json("{{ url_for('static', filename='odb8_tree.json') }}", function(error, root) {
         if (error) throw error;
 
-        path = svg.datum(root).selectAll("path")
-            .data(partition.nodes)
-            .enter().append("path")
+        path = svg.datum(root).selectAll("path").data(partition.nodes)
+        path.enter().append("path")
             .attr("id", function(d) { return "node" + d.taxid; })
-            .attr("class", function(d) { return major_groups.has(d.taxid) ? "major_node" : "node"; })
+            .attr("class", function(d) { 
+                return major_groups.has(d.taxid) ? "major_node" : "node"; 
+            })
             .attr("display", function(d) { return d.depth ? null : "none"; }) // hide inner ring
             .attr("d", arc)
             .style("stroke", "#fff")
@@ -127,8 +129,33 @@ function phyloViz(data) {
             .on('mouseover', hoverInfoEnter)
             .on('mouseout', hoverInfoExit)
             .on('click', nodeClick);
-    });
+        addMajorGroupMarkers();
+    })
 
+
+    function addMajorGroupMarkers() {
+        console.log(d3.selectAll('.major_node').data());
+        nodes = d3.selectAll('.major_node').data()
+        nodes.map(function (d, i) {
+                svg.append('path')
+                .attr('d', d3.svg.arc()
+                           .startAngle(d.x)
+                           .endAngle(d.x+d.dx)
+                           .innerRadius(radius)
+                           .outerRadius(radius+20))
+                .attr('id', 'major_node'+i)
+                .style("fill", majorGroupColormap(i))
+                .moveToBack()
+        });
+        svg.selectAll('.major_label').data(nodes)
+            .enter().append('text')
+            .attr('class', 'major_label')
+            .attr('x', 20)
+            .attr('dy', 15)
+            .append('textPath')
+            .attr('xlink:href', function(d,i) { return '#major_node'+i; })
+            .text(function(d) { return d.organism; });
+    }
 
     function hoverInfoEnter(d) {
         if (!selected_node) {

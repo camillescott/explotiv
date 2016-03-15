@@ -21,6 +21,10 @@ a {
     text-align: center;
 }
 
+.major_label {
+    font-weight: bold;
+}
+
 header {
     color: white;
     text-align: center;
