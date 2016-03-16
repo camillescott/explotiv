@@ -11,8 +11,8 @@ from jinja2 import TemplateNotFound
 import pandas as pd
 
 from common import static_folder, template_folder
-from database import db
 import database
+from database import db
 
 views = Blueprint('phylo_pane', __name__,
                   static_folder=static_folder,
