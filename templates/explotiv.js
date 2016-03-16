@@ -57,12 +57,12 @@ function phyloViz(data) {
                             .attr("transform", 
                                   "translate(" + (((100-legend_width)/2)-2) + "," + (800-legend_height)/2 + ")");
 
-    var legendData = d3.range(0,1,1/legend_items).map(function (i) {
+    var legendData = d3.range(0,1,1/legend_items).reverse().map(function (i) {
                             return { 'height': legend_height / legend_items,
                                      'width': legend_width,
                                      'yloc': i * legend_height,
                                      'xloc': 0,
-                                     'val': i };
+                                     'val': 1-i};
                       });
 
     var legendItems = legendContainer.selectAll("g")
@@ -150,7 +150,7 @@ function phyloViz(data) {
         svg.selectAll('.major_label').data(nodes)
             .enter().append('text')
             .attr('class', 'major_label')
-            .attr('x', 20)
+            .attr('x', 5)
             .attr('dy', 15)
             .append('textPath')
             .attr('xlink:href', function(d,i) { return '#major_node'+i; })
@@ -175,6 +175,7 @@ function phyloViz(data) {
         removeSelection();
         selected_node = d;
         addSelection(selected_node);
+        plotHistogram(selected_node);
 
     }
 
@@ -192,6 +193,28 @@ function phyloViz(data) {
     function removeSelection() {
         d3.select("#selection").remove();
         selected_node = 0;
+    }
+
+    function plotHistogram(node) {
+        chart_div = document.getElementById('histogram-chart');
+        d3.json('/node-data/' + node.taxid, function(error, root) {
+            if (error) throw error;
+
+            layout =   {title: 'Score Distribution for ' + node.organism,
+                         xaxis: {title: 'Scores'}}
+            
+            if (chart_div.data) {
+                console.log('redraw');
+                chart_div.data[0].x = dictValues(root.data);
+                chart_div.layout.title = layout.title;
+                Plotly.redraw(chart_div);
+            } else {
+                Plotly.plot( chart_div, 
+                        [{x: dictValues(root.data),
+                          type: 'histogram'}],
+                        layout);
+            }
+        });
     }
 
 }
