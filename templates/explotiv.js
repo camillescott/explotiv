@@ -232,3 +232,54 @@ function phyloInit() {
         phyloViz(obj.data);
     });
 }
+
+function save() {
+    savePlot(4.0, "{{name}}", "{{ url_for('static', filename='style.css') }}", 'svg');
+}
+
+function savePlot(scaling, filename, stylesheetfile, format) {
+
+    // First lets get the stylesheet
+    var sheetlength = stylesheetfile.length;
+    var style = document.createElementNS("http://www.w3.org/1999/xhtml", "style");
+    style.textContent += "<![CDATA[\n";
+    for (var i=0;i<document.styleSheets.length; i++) {
+    str = document.styleSheets[i].href;
+    if(null == str) continue;
+
+    if (str.substr(str.length-sheetlength)==stylesheetfile){
+            var rules;
+            if(document.styleSheets[i].cssRules) {
+                rules = document.styleSheets[i].cssRules;
+            } else if (document.styleSheets[i].rules) {
+                rules = document.styleSheets[i].rules;
+            }
+            if(rules) {
+                for (var j=0; j<rules.length;j++){
+                    style.textContent += (rules[j].cssText + "\n");
+                }
+            }
+            break;
+        }
+    }
+    style.textContent += "]]>";
+
+    // Now we clone the SVG element, resize and scale it up
+    var containertag = document.getElementById('explotiv-chart');
+    var clonedSVG = containertag.cloneNode(true);
+    var svg = clonedSVG.getElementsByTagName("svg")[0];
+
+
+    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    console.log(svg)
+
+    var content = clonedSVG.innerHTML.trim();
+
+    if(format == 'svg') {
+    var a = document.createElement('a');
+    a.href = "data:application/octet-stream;base64;attachment," + btoa(content);
+    a.download = filename + ".svg";
+    a.click();
+
+    } 
+}
