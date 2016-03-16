@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background}{}% 2
+\BOOKMARK [1][-]{section.3}{Methods}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Protein Mapping}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Tree Building}{section.3}% 5
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Base Tree}{subsection.3.2}% 6
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Calculating Node Scores}{subsection.3.2}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Producing the Visualization}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{Implementation Details}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Results}{}% 10
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 11

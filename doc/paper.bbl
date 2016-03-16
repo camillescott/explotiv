@@ -1,0 +1,43 @@
+\begin{thebibliography}{1}
+
+\bibitem{kielbasa_adaptive_2011}
+S.~M. Kiełbasa, R.~Wan, K.~Sato, P.~Horton, and M.~C. Frith, ``Adaptive seeds
+  tame genomic sequence comparison,'' {\em Genome Res.}, vol.~21, pp.~487--493,
+  Mar. 2011.
+
+\bibitem{sheetlin_frameshift_2014}
+S.~L. Sheetlin, Y.~Park, M.~C. Frith, and J.~L. Spouge, ``Frameshift alignment:
+  statistics and post-genomic applications,'' {\em Bioinformatics}, vol.~30,
+  pp.~3575--3582, Dec. 2014.
+
+\bibitem{waterhouse_orthodb:_2011}
+R.~M. Waterhouse, E.~M. Zdobnov, F.~Tegenfeldt, J.~Li, and E.~V. Kriventseva,
+  ``{OrthoDB}: the hierarchical catalog of eukaryotic orthologs in 2011,'' {\em
+  Nucleic Acids Research}, vol.~39, pp.~D283--D288, Jan. 2011.
+
+\bibitem{sayers_database_2009}
+E.~W. Sayers, T.~Barrett, D.~A. Benson, S.~H. Bryant, K.~Canese, V.~Chetvernin,
+  D.~M. Church, M.~DiCuccio, R.~Edgar, S.~Federhen, M.~Feolo, L.~Y. Geer,
+  W.~Helmberg, Y.~Kapustin, D.~Landsman, D.~J. Lipman, T.~L. Madden, D.~R.
+  Maglott, V.~Miller, I.~Mizrachi, J.~Ostell, K.~D. Pruitt, G.~D. Schuler,
+  E.~Sequeira, S.~T. Sherry, M.~Shumway, K.~Sirotkin, A.~Souvorov,
+  G.~Starchenko, T.~A. Tatusova, L.~Wagner, E.~Yaschenko, and J.~Ye, ``Database
+  resources of the {National} {Center} for {Biotechnology} {Information},''
+  {\em Nucleic Acids Research}, vol.~37, pp.~D5--D15, Jan. 2009.
+
+\bibitem{karlin_methods_1990}
+S.~Karlin and S.~F. Altschul, ``Methods for assessing the statistical
+  significance of molecular sequence features by using general scoring
+  schemes,'' {\em Proceedings of the National Academy of Sciences}, vol.~87,
+  no.~6, pp.~2264--2268, 1990.
+
+\bibitem{mckinney_data_2010}
+W.~McKinney and {others}, ``Data structures for statistical computing in
+  {Python},'' in {\em Proceedings of the 9th {Python} in {Science}
+  {Conference}}, vol.~445, pp.~51--56, 2010.
+
+\bibitem{bostock_d3:_2011}
+M.~Bostock, V.~Ogievetsky, and J.~Heer, ``D3: {Data}-{Driven} {Documents},''
+  {\em IEEE Trans. Visualization \& Comp. Graphics (Proc. InfoVis)}, 2011.
+
+\end{thebibliography}

@@ -1,0 +1,25 @@
+## explotiv
+
+To test, first get the source:
+
+    git clone https://github.com/camillescott/explotiv.git
+
+Get the Python dependencies. I recommend anaconda; or, use pip as so:
+
+    pip install pandas scikit-bio pyprind psutil flask dammit
+
+Get some test data:
+
+    cd explotiv
+    curl -OL https://s3-us-west-1.amazonaws.com/camillescott-dammit/Chickadee.trans.fa.explotiv.csv
+
+Prep your env. To run the analysis prep, you need more databases, but to just run the viewer,
+you can fudge a database directory like so:
+
+    export DAMMIT_DB_DIR=~/.dammit/databases/
+
+Finally, run the viewer:
+
+    ./explotiv view --input Chickadee.trans.fa.explotiv.csv --name Chickadee
+
+Open a browser and go to localhost:5001 to use the viewer.
