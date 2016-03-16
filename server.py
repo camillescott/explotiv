@@ -24,7 +24,7 @@ def run(args):
 
     app.config['DATABASE_FN'] = database_fn
     app.config['EXPLOTIV_FN'] = explotiv_fn
-    app.config['DATABASE_KEY'] = args.name
+    app.config['NAME'] = args.name
 
     #app.register_blueprint(transcript_pane.views)
     app.register_blueprint(phylo_pane.views)

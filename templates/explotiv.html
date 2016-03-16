@@ -21,7 +21,9 @@
 {% include 'js_imports.html' %}
 <body>
     <header>
-    <h1><em>explotiv</em> Transcriptome Explorer</h1>
+        <div>
+            <h1><em>explotiv</em> Transcriptome Explorer <small>{{version}}</small></h1>
+        </div>
     </header>
     <nav>
     <div id='explotiv-legend'></div>
@@ -31,8 +33,12 @@
     <div id='explotiv-chart'></div>
     </section>
     <aside>
+        <div id='about' class='chart'>
+            <b>Project</b>: {{ name }}
+            <br><b>Source</b>: {{ explotiv_fn }}
+        </div>
         <div class='hoverInfo' id='hoverinfodiv'></div>
-        <div id='histogram-chart'></div>
+        <div id='histogram-chart' class='chart'></div>
     </aside>
 <script>
 

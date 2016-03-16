@@ -82,7 +82,7 @@ function phyloViz(data) {
                               .attr("y", function (d) { return d.yloc; })
                               .attr("height", function (d) { return d.height; })
                               .attr("width", function (d) { return d.width; })
-                              .style("fill", function(d) { return colormap(d.val); });
+                              .style("fill", function(d) { return colormap(d.val); })
 
 
     var tip = d3.tip().attr('class', 'd3-tip')
@@ -162,7 +162,7 @@ function phyloViz(data) {
             d3.select("#hoverinfotext").remove();
             d3.select("#hoverinfodiv").append("span")
                                   .attr("id", "hoverinfotext")
-                                  .html(d.organism + ' (<em>P</em>=' + +(data[d.taxid]).toFixed(3) + ')');
+                                  .html(d.organism + ' (<em>Score</em>=' + +(data[d.taxid]).toFixed(3) + ')');
         }
     }
 
@@ -185,7 +185,7 @@ function phyloViz(data) {
                                                  .endAngle(d.x + d.dx)
                                                  .innerRadius(Math.sqrt(d.y))
                                                  .outerRadius(radius))
-                          .style("fill", "rgba(0,0,0,0.5)")
+                          .style("fill", "rgba(0,0,0,0.2)")
                           .on("click", removeSelection);
         //d3.select("#selection").moveToBack();
     }
@@ -200,19 +200,25 @@ function phyloViz(data) {
         d3.json('/node-data/' + node.taxid, function(error, root) {
             if (error) throw error;
 
-            layout =   {title: 'Score Distribution for ' + node.organism,
-                         xaxis: {title: 'Scores'}}
-            
+            chart_layout = { title: 'Score Distribution for ' + node.organism,
+                             xaxis: { title: 'Score' },
+                             yaxis: { title: 'Count' } }
+
             if (chart_div.data) {
                 console.log('redraw');
                 chart_div.data[0].x = dictValues(root.data);
-                chart_div.layout.title = layout.title;
+                chart_div.data[0].marker.color = colormap(data[node.taxid]);
+                chart_div.layout.title = chart_layout.title;
                 Plotly.redraw(chart_div);
             } else {
-                Plotly.plot( chart_div, 
-                        [{x: dictValues(root.data),
-                          type: 'histogram'}],
-                        layout);
+                chart_data = [
+                    { x: dictValues(root.data),
+                      type: 'histogram',
+                      marker: { color: colormap(data[node.taxid]),
+                                opacity: 0.75
+                     }}
+                ]
+                Plotly.plot( chart_div, chart_data, chart_layout);
             }
         });
     }

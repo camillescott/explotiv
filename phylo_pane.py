@@ -34,7 +34,10 @@ def error_404_page(error):
 
 @views.route('/')
 def phylo_viz():
-    return render_template('explotiv.html')
+    return render_template('explotiv.html',
+                           name=current_app.config['NAME'],
+                           version='v0.1',
+                           explotiv_fn=os.path.basename(current_app.config['EXPLOTIV_FN']))
 
 
 @views.route('/probability-means')
