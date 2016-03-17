@@ -40,11 +40,11 @@ def phylo_viz():
                            explotiv_fn=os.path.basename(current_app.config['EXPLOTIV_FN']))
 
 
-@views.route('/probability-means')
+@views.route('/node-means')
 def node_means():
     #key = current_app.config['DATABASE_KEY']
     means = g.db['means']
-    return jsonify({'data': means.to_dict()})
+    return jsonify({'data': means[means >= 0].to_dict()})
 
 
 @views.route('/node-data/<int:taxid>')
