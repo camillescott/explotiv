@@ -85,6 +85,8 @@ function phyloViz(data) {
                               .style("fill", function(d) { return colormap(d.val); })
 
 
+    plotHistogram(null);
+
     var tip = d3.tip().attr('class', 'd3-tip')
         .offset(function() {
             return [this.getBBox().height / 2, -this.getBBox().width/2]
@@ -167,7 +169,7 @@ function phyloViz(data) {
     }
 
     function hoverInfoExit(d) {
-        //d3.select("#hoverinfotext").remove();
+        d3.select("#hoverinfotext").remove();
     }
 
     function nodeClick(d) {
@@ -193,32 +195,38 @@ function phyloViz(data) {
     function removeSelection() {
         d3.select("#selection").remove();
         selected_node = 0;
+        plotHistogram(null)
     }
 
     function plotHistogram(node) {
         chart_div = document.getElementById('histogram-chart');
-        d3.json('/node-data/' + node.taxid, function(error, root) {
+
+        url = node ? '/node-data/' + node.taxid : '/node-means';
+        organism = node ? node.organism : 'all Mean Scores';
+        color = node ? colormap(data[node.taxid]) : colormap(0.5);
+
+        d3.json(url, function(error, root) {
             if (error) throw error;
 
-            chart_layout = { title: 'Score Distribution for ' + node.organism,
+            chart_layout = { title: 'Score Distribution for ' + organism,
                              xaxis: { title: 'Score' },
                              yaxis: { title: 'Count' } }
 
             if (chart_div.data) {
                 console.log('redraw');
                 chart_div.data[0].x = dictValues(root.data);
-                chart_div.data[0].marker.color = colormap(data[node.taxid]);
+                chart_div.data[0].marker.color = color;
                 chart_div.layout.title = chart_layout.title;
                 Plotly.redraw(chart_div);
             } else {
                 chart_data = [
                     { x: dictValues(root.data),
                       type: 'histogram',
-                      marker: { color: colormap(data[node.taxid]),
+                      marker: { color: colormap(color),
                                 opacity: 0.75
                      }}
                 ]
-                Plotly.plot( chart_div, chart_data, chart_layout);
+                Plotly.plot(chart_div, chart_data, chart_layout);
             }
         });
     }
